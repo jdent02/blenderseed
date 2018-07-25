@@ -102,7 +102,6 @@ html_theme_options = {
     'navbar_links': [
         ("Features", "features"),
         ("Installation", "installation"),
-        ("Quickstart", "quickstart"),
         ("Reference", "reference"),
         ("About", "about"),
         ("Tutorials", "tutorials"),
