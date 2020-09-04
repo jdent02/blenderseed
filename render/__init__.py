@@ -32,6 +32,7 @@ import bpy
 
 import appleseed as asr
 from .final_tilecallback import FinalTileCallback
+from .interactive_tilecallback import InteractiveTileCallback
 from .renderercontroller import FinalRendererController, InteractiveRendererController
 from ..logger import get_logger
 from ..translators.preview import PreviewRenderer
@@ -308,7 +309,7 @@ class RenderAppleseed(bpy.types.RenderEngine):
         project = self.__interactive_scene_translator.as_project
 
         self.__renderer_controller = InteractiveRendererController()
-        self.__tile_callback = asr.BlenderProgressiveTileCallback(self.tag_redraw)
+        self.__tile_callback = InteractiveTileCallback()
 
         self.__renderer = asr.MasterRenderer(
             project,
@@ -371,7 +372,7 @@ class RenderAppleseed(bpy.types.RenderEngine):
         """
 
         self.bind_display_space_shader(depsgraph.scene_eval)
-        self.__tile_callback.draw_pixels()
+        self.__tile_callback.draw_pixels(self, context, depsgraph)
         self.unbind_display_space_shader()
 
     def __add_render_passes(self, scene):
