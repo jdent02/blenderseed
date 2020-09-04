@@ -137,6 +137,18 @@ def get_render_resolution(scene):
     height = int(scene.render.resolution_y * scale)
     return width, height
 
+def get_viewport_resolution(depsgraph, context):
+    if context is not None:
+        width = int(context.region.width)
+        height = int(context.region.height)
+    else:
+        scene = depsgraph.scene_eval
+        scale = scene.render.resolution_percentage / 100.0
+        width = int(scene.render.resolution_x * scale)
+        height = int(scene.render.resolution_y * scale)
+
+    return [width, height]
+
 
 def calc_film_aspect_ratio(scene):
     render = scene.render

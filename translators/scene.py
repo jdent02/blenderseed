@@ -39,7 +39,7 @@ from .textures import TextureTranslator
 from .utilites import ProjectExportMode
 from .world import WorldTranslator
 from ..logger import get_logger
-from ..utils.util import Timer, calc_film_aspect_ratio, clamp_value, realpath
+from ..utils.util import Timer, calc_film_aspect_ratio, clamp_value, get_viewport_resolution, realpath
 
 logger = get_logger()
 
@@ -619,17 +619,7 @@ class SceneTranslator(object):
         conf_interactive.set_parameters(parameters)
 
     def __calc_viewport_resolution(self, depsgraph, context):
-        scene = depsgraph.scene_eval
-        scale = scene.render.resolution_percentage / 100.0
-
-        if context is not None:
-            width = int(context.region.width)
-            height = int(context.region.height)
-        else:
-            width = int(scene.render.resolution_x * scale)
-            height = int(scene.render.resolution_y * scale)
-
-        self.__viewport_resolution = [width, height]
+        self.__viewport_resolution = get_viewport_resolution(depsgraph, context)
 
     def __translate_frame(self, depsgraph):
         logger.debug("appleseed: Translating frame")
